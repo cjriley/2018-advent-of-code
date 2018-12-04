@@ -50,16 +50,18 @@ for item in sorted_input:
             guard_data[current_guard][sleeping_minute] += 1
 
 
-# Now find the sleepiest guard and his sleepiest minute
+# Strategy 2: Of all guards, which guard is most frequently asleep on the same
+# minute?
 sleepiest_guard = None
-sleepiest_minute_number = None
-total_sleeping_time = 0
-for guard_number, sleep_data in guard_data.items():
-    total_minutes_asleep = sum(sleep_data.values())
-    if total_minutes_asleep > total_sleeping_time:
-        sleepiest_guard = guard_number
-        total_sleeping_time = total_minutes_asleep
-        sleepiest_minute_number, _ = max(
-            sleep_data.items(), key=lambda x: x[1])
+most_frequent_minute = 0
+max_sleep_quantity = 0
 
-print(f"{int(sleepiest_guard) * sleepiest_minute_number}")
+for guard_number, sleep_data in guard_data.items():
+    sleepiest_minute, sleep_quantity = max(
+        sleep_data.items(), key=lambda x: x[1])
+    if sleep_quantity > max_sleep_quantity:
+        sleepiest_guard = int(guard_number)
+        most_frequent_minute = sleepiest_minute
+        max_sleep_quantity = sleep_quantity
+
+print(f"{sleepiest_guard * most_frequent_minute}")
